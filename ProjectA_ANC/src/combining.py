@@ -1,4 +1,3 @@
-# src/combining.py
 import os
 import numpy as np
 import soundfile as sf
@@ -9,13 +8,13 @@ os.makedirs(DATA_DIR, exist_ok=True)
 
 
 def to_mono(x):
-    """Convert stereo to mono by averaging channels"""
+    # Convert stereo to mono by averaging channels
     if x.ndim > 1:
         x = np.mean(x, axis=1)
     return x
 
 
-# Load speech and noise files (replace with your own filenames)
+# Load speech and noise files
 speech, fs1 = sf.read(os.path.join(DATA_DIR, "speech.wav"))
 noise, fs2 = sf.read(os.path.join(DATA_DIR, "noise.wav"))
 
@@ -35,7 +34,7 @@ speech = speech / np.max(np.abs(speech))
 noise = noise / np.max(np.abs(noise))
 
 # Create primary (speech + noise)
-primary = speech + 0.5 * noise
+primary = speech + noise
 
 # Reference signal (aligned noise, no delay)
 reference = noise.copy()
@@ -44,4 +43,4 @@ reference = noise.copy()
 sf.write(os.path.join(DATA_DIR, "primary.wav"), primary, fs1)
 sf.write(os.path.join(DATA_DIR, "reference.wav"), reference, fs1)
 
-print("✅ Created primary.wav and reference.wav in 'data/'")
+print("Created primary.wav and reference.wav in 'data/'")

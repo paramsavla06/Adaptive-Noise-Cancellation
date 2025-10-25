@@ -1,12 +1,8 @@
-# src/utils.py
 import numpy as np
 import soundfile as sf
 import matplotlib.pyplot as plt
 import librosa
 import librosa.display
-import os
-
-# --- Audio I/O ---
 
 
 def load_wav(path):
@@ -23,8 +19,6 @@ def save_wav(path, data, fs):
 def normalize_signal(x):
     return x / np.max(np.abs(x))
 
-# --- SNR ---
-
 
 def compute_snr(clean, noisy):
     N = min(len(clean), len(noisy))
@@ -33,8 +27,6 @@ def compute_snr(clean, noisy):
     noise = noisy - clean
     snr = 10 * np.log10(np.sum(clean**2) / np.sum(noise**2))
     return snr
-
-# --- Plotting ---
 
 
 def plot_waveforms(primary, cleaned, clean_speech=None):
@@ -56,8 +48,7 @@ def plot_waveforms(primary, cleaned, clean_speech=None):
 def plot_spectrogram(signal, fs, title="Spectrogram"):
     plt.figure(figsize=(10, 4))
     D = np.abs(librosa.stft(signal))
-    librosa.display.specshow(librosa.amplitude_to_db(D, ref=np.max),
-                             sr=fs, y_axis='log', x_axis='time')
+    librosa.display.specshow(librosa.amplitude_to_db(D, ref=np.max), sr=fs, y_axis='log', x_axis='time')
     plt.colorbar(format='%+2.0f dB')
     plt.title(title)
     plt.tight_layout()
