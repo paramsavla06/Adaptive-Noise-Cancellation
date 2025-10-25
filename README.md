@@ -1,48 +1,59 @@
 # Adaptive Noise Cancellation (ANC) with LMS Filter
 
-This project uses the **Least Mean Squares (LMS)** adaptive filter algorithm, implemented in Python, to remove noise from an audio signal containing speech.
+This project demonstrates **Adaptive Noise Cancellation (ANC)** using the **Least Mean Squares (LMS)** algorithm to remove noise from an audio signal containing speech.
 
 ---
 
-## 🎯 Goal
+## Goal
 
-To isolate a clean speech signal by subtracting an estimated noise component from a noisy input signal.
-
-## 🧠 How It Works (LMS Filter)
-
-The core script (`main.py`) performs the ANC:
-
-1.  **Input:** It takes the **Primary Signal** ($d(n)$, which is Speech + Noise) and the **Reference Signal** ($x(n)$, which is the Noise source).
-2.  **Estimation:** The LMS filter **estimates the noise** ($y(n)$) found in the Primary Signal using the Reference Signal.
-3.  **Output:** The final **Cleaned Output** is the **Error Signal** ($e(n) = d(n) - y(n)$), which contains the resulting speech.
-4.  **Learning:** The filter weights ($\mathbf{w}$) are continuously updated using the error to improve noise estimation over time.
-
-### Key Parameters:
-* **Step Size ($\mu$)**: `0.01` (Controls learning speed).
-* **Filter Order**: `64` (Number of filter taps).
+Isolate a clean speech signal by estimating and subtracting the noise from a noisy input signal.
 
 ---
 
-## 🛠️ Get Started
+## How It Works
 
-1.  **Dependencies:** Install required libraries: `numpy`, `soundfile`, `matplotlib`, `librosa`.
-2.  **Data Prep:** Put your audio files (`speech.wav` and `noise.wav`) in a `data/` folder.
-3.  **Run:** Execute the scripts in order:
-    * `python src/combining.py` (Creates the Primary and Reference inputs).
-    * `python src/main.py` (Runs the ANC and generates results).
+1. **Input Signals**:
+   - **Primary signal**: Contains speech plus noise.
+   - **Reference noise signal**: Correlated noise used for estimation.
+
+2. **Adaptive Filtering**:
+   - LMS adaptive filter generates an output approximating the noise in the primary signal.
+   - The **error signal** (primary minus filter output) represents the cleaned speech.
+
+3. **Filter Update (Conceptual)**:
+   - The filter adjusts its coefficients iteratively to minimize the error between predicted noise and actual noise.
+
+4. **Output**:
+   - The error signal is the **noise-canceled speech**.
 
 ---
 
-## 📊 Results Summary
+## Advantages
 
-The ANC process is successful, resulting in a **Signal-to-Noise Ratio (SNR) improvement**.
+- **Simple and effective** for real-time applications.  
+- **Adaptive**: Tracks changing noise patterns automatically.  
+- **Lightweight**: Low computational requirement, suitable for embedded systems.  
+- Can handle **correlated noise** that is unknown in advance.
 
-| Metric | Before ANC | After ANC |
-| :--- | :--- | :--- |
-| **SNR** | (Value from your run) dB | (Value from your run) dB |
+---
 
-The plots confirm the noise is significantly reduced in the **Cleaned Signal Spectrogram** while the speech patterns remain visible.
+## Visualization
 
-| Primary Signal Spectrogram | Cleaned Signal Spectrogram |
-| :---: | :---: |
-| ![Primary Spectrogram](primary%20signal%20grph.jpg) | ![Cleaned Spectrogram](cleaned%20signal%20graph.jpg) |
+- Plot noisy vs. cleaned speech signals to verify performance.  
+- Optional: Display spectrograms to observe noise reduction across frequencies.
+
+---
+
+## References
+
+1. Haykin, S. *Adaptive Filter Theory*, 5th Edition, Pearson.  
+2. Widrow, B., & Stearns, S. *Adaptive Signal Processing*, Prentice Hall, 1985.  
+3. S. K. Mitra, *Digital Signal Processing: A Computer-Based Approach*, 4th Edition, McGraw-Hill.
+
+---
+
+## Notes
+
+- Works best with a reference noise signal **correlated to the noise** in the primary input.  
+- Performance depends on **filter order** and **step size (learning rate)**.  
+- Can be extended to **real-time audio processing** using streaming inputs.
